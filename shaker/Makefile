@@ -18,11 +18,11 @@
 # FUSES ........ Parameters for avrdude to flash the fuses appropriately.
 
 # DEBUG 	   = -DDEBUG
-# DEBUG_OBJ  = debug_tools.o
+# DEBUG_OBJ  = softuart.o debug_tools.o
 DEVICE     = attiny45
 CLOCK      = 1000000
 PROGRAMMER = -c usbtiny -P usb
-OBJECTS    = main.o softuart.o tools_tiny.o adc_tiny.o accel.o shake_detect.o $(DEBUG_OBJ)
+OBJECTS    = main.o tools_tiny.o adc_tiny.o accel.o shake_detect.o led_fader.o $(DEBUG_OBJ)
 FUSES      = -U lfuse:w:0x62:m -U hfuse:w:0xdf:m -U efuse:w:0xff:m
 
 # ATMega8 fuse bits used above (fuse bits for other devices are different!):

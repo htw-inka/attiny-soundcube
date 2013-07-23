@@ -19,15 +19,15 @@ void shake_detect_init() {
 	// this is in theory: 1000000 * 1000 / 8192 / 500 - 1
 	minShakeTimeCounterVal = (F_CPU * 1000L) / SHAKE_DETECT_TIMER_PRESCALER_VALUE / SHAKE_DETECT_MIN_MS - 1;
 	// printInt(minShakeTimeCounterVal);PRINT_NL;
-	TCCR1 |= SHAKE_DETECT_TIMER_PRESCALER_MASK;
+	SHAKE_DETECT_TIMER_REG = SHAKE_DETECT_TIMER_PRESCALER_MASK;
 }
 
 void shake_detect_update() {
-	if (shakeDetected == 0) TCNT1 = 0;	// reset timer when no shake was detected
+	if (shakeDetected == 0) SHAKE_DETECT_TIMER_COUNTER = 0;	// reset timer when no shake was detected
 
 	const int32_t totalG = ACCEL_getTotalVectorSquared();
 
-	if (shakeDetected == 1 && minShakeTimeExceeded == 0 && TCNT1 >= minShakeTimeCounterVal) {	// it was shaken long enough
+	if (shakeDetected == 1 && minShakeTimeExceeded == 0 && SHAKE_DETECT_TIMER_COUNTER >= minShakeTimeCounterVal) {	// it was shaken long enough
 		minShakeTimeExceeded = 1;
 		// DIGIWRITE_H(PORTB, PB1);
 	}
@@ -68,7 +68,7 @@ void shake_detect_update() {
 			softuart_putchar('S');PRINT_NL;
 #endif
 			shakeDetected = 1;
-			TCNT1 = 0;	// reset the timer
+			SHAKE_DETECT_TIMER_COUNTER = 0;	// reset the timer
 			(*shakeDetectBeginCallback)();
 		}
 	}

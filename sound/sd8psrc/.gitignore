@@ -1,0 +1,4 @@
+obj_*/*.d
+obj_*/*.o
+obj_*/*.lst
+obj_*/*.sym

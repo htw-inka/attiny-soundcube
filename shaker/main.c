@@ -45,6 +45,12 @@
 #define PIN_LED				PB0
 #define PIN_AUDIO_TRIGGER	PB1
 
+#define LED_SHAKEN_VAL		255
+#define LED_SHAKEN_SPEED	5
+#define LED_PULSE_MIN		0
+#define LED_PULSE_MAX		20
+#define LED_PULSE_SPEED		25
+
 #ifdef DEBUG
 #include "debug_tools.h"
 #include "softuart.h"
@@ -55,20 +61,23 @@
 // #include "adc_tiny.h"
 #include "accel.h"
 #include "shake_detect.h"
+#include "led_fader.h"
 
 void shakeBegan(void) {
-	DIGIWRITE_H(PORTB, PIN_LED);
+	led_fader_set(LED_FADER_MODE_FADE_TO, LED_SHAKEN_SPEED, LED_SHAKEN_VAL, 0);
+	DIGIWRITE_H(PORTB, PIN_AUDIO_TRIGGER);
 }
 
 void shakeEnded(void) {
-	DIGIWRITE_L(PORTB, PIN_LED);
+	led_fader_set(LED_FADER_MODE_ALTERNATING, LED_PULSE_SPEED, LED_PULSE_MIN, LED_PULSE_MAX);
+	DIGIWRITE_L(PORTB, PIN_AUDIO_TRIGGER);
 }
 
 int main(void) {
 	// set LED and audio trigger pins to output
-	DDRB |= (1 << PIN_LED)  | (1 << PIN_AUDIO_TRIGGER);
-	DIGIWRITE_L(PORTB, PIN_LED);
+	DDRB = (1 << PIN_LED)  | (1 << PIN_AUDIO_TRIGGER);
 	DIGIWRITE_L(PORTB, PIN_AUDIO_TRIGGER);
+	DIGIWRITE_L(PORTB, PIN_LED);
 
 	// do initializations
 	ACCEL_init();
@@ -89,6 +98,10 @@ int main(void) {
 	shakeDetectBeginCallback = &shakeBegan;
 	shakeDetectEndCallback = &shakeEnded;
 	shake_detect_init();
+
+	// set up LED fader
+	led_fader_init();
+	shakeEnded();	// will set the initial LED fading
 
 	// main loop
 	for ( ;; ) {

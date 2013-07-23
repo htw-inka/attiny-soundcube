@@ -76,8 +76,10 @@
 #endif
 #endif
 
-// ATtiny 8-bit timer prescaler mask
-#ifndef SHAKE_DETECT_TIMER_PRESCALER_MASK
+// ATtiny 8-bit timer register and prescaler mask
+#ifndef SHAKE_DETECT_TIMER_REG
+#define SHAKE_DETECT_TIMER_REG				TCCR1
+#define SHAKE_DETECT_TIMER_COUNTER			TCNT1
 #define SHAKE_DETECT_TIMER_PRESCALER_MASK	((1 << CS11) | (1 << CS12) | (1 << CS13))	// set the timer prescaler to F_CPU / 8192
 #define SHAKE_DETECT_TIMER_PRESCALER_VALUE	8192L
 #endif
