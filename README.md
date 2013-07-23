@@ -17,4 +17,4 @@ This code consists of two programs, each for a separate _Atmel AVR ATtiny_ micro
 
 The program _shaker_ is released under BSD 3-clause license which is contained in the file `shaker/LICENSE`.
 
-The program _sound_ is Copyright (C) 2010 by [ChaN](http://elm-chan.org/) and contains only small modifications by the author of the above program and is licensed under the conditions published in the source code.
+The program _sound_ is Copyright (C) 2010 by [ChaN](http://elm-chan.org/) and contains only small modifications by INKA Research Group. It is licensed under the conditions published in the source code under `sound/sd8psrc`.
