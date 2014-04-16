@@ -9,12 +9,8 @@ static uint8_t fadeMode = LED_FADER_MODE_FADE_TO;
 static uint8_t fadeSpeed = 1;
 
 void led_fader_init() {
-	// set timer registers
-	LED_FADER_8BIT_TIMER_REGA = LED_FADER_8BIT_TIMER_REGA_MASK;
-	LED_FADER_8BIT_TIMER_REGB = LED_FADER_8BIT_TIMER_REGB_MASK;
-
 	// set interrupt register
-	LED_FADER_INTERRUPT_REG = LED_FADER_INTERRUPT_REG_MASK;
+	LED_FADER_INTERRUPT_REG |= LED_FADER_INTERRUPT_REG_MASK;
 
 	// set initial values
 	compVal = compValMin;
@@ -38,6 +34,18 @@ void led_fader_set(uint8_t mode, uint8_t speed, uint8_t v1, uint8_t v2) {
 		if (compVal > compValMax) compValChange = -1;
 		else compValChange = 1;
 	}
+}
+
+void led_fader_enable() {
+	// set timer registers
+	LED_FADER_8BIT_TIMER_REGA = LED_FADER_8BIT_TIMER_REGA_MASK;
+	LED_FADER_8BIT_TIMER_REGB = LED_FADER_8BIT_TIMER_REGB_MASK;
+}
+
+void led_fader_disable() {
+	// set timer registers
+	LED_FADER_8BIT_TIMER_REGA = 0;
+	LED_FADER_8BIT_TIMER_REGB = 0;
 }
 
 ISR(LED_FADER_COMP_TIMER_IR) {

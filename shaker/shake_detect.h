@@ -49,21 +49,21 @@
 
 // threshold upon which beginShakeCallback is called when reached or endShakeCallback when it drops underneath again
 #ifndef SHAKE_DETECT_THRESH
-#define SHAKE_DETECT_THRESH 10
+#define SHAKE_DETECT_THRESH 15
 #endif
 
 // maximum shake level. shakeLevel cannot rise higher than this value
 #ifndef SHAKE_DETECT_MAX_LEVEL
-#define SHAKE_DETECT_MAX_LEVEL	15
+#define SHAKE_DETECT_MAX_LEVEL	20
 #endif
 
 // threshold upon which a shock might be occured
 #ifndef SHAKE_DETECT_SHOCK_THRESH
-#define SHAKE_DETECT_SHOCK_THRESH 10000
+#define SHAKE_DETECT_SHOCK_THRESH 40000
 #endif
 
 #ifndef SHAKE_DETECT_SHOCK_LEVEL_INCREASE
-#define SHAKE_DETECT_SHOCK_LEVEL_INCREASE 3
+#define SHAKE_DETECT_SHOCK_LEVEL_INCREASE 2
 #endif
 
 // minimum milli seconds of shake duration

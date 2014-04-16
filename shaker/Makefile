@@ -19,7 +19,7 @@
 
 # DEBUG 	   = -DDEBUG
 # DEBUG_OBJ  = softuart.o debug_tools.o
-DEVICE     = attiny45
+DEVICE     = attiny85
 CLOCK      = 1000000
 PROGRAMMER = -c usbtiny -P usb
 OBJECTS    = main.o tools_tiny.o adc_tiny.o accel.o shake_detect.o led_fader.o $(DEBUG_OBJ)
@@ -52,9 +52,14 @@ FUSES      = -U lfuse:w:0x62:m -U hfuse:w:0xdf:m -U efuse:w:0xff:m
 
 AVRDUDE = avrdude $(PROGRAMMER) -p $(DEVICE)
 COMPILE = avr-gcc -Wall -Os -DF_CPU=$(CLOCK) $(DEBUG) -mmcu=$(DEVICE)
+ 
 
 # symbolic targets:
+all:	COMPILE += -DENABLE_SLEEP
+all:	OBJECTS += standbytimer.o
 all:	main.hex
+
+nosleep:	main.hex
 
 .c.o:
 	$(COMPILE) -c $< -o $@

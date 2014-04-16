@@ -1,6 +1,7 @@
 #include "shake_detect.h"
 
 #include "tools_tiny.h"
+#include "standbytimer.h"
 
 /*--------------------------------*/
 /* SHAKE DETECT PRIVATE VARIABLES */
@@ -15,19 +16,30 @@ static uint8_t minShakeTimeCounterVal;		// counter value for SHAKE_DETECT_MIN_MS
 /* SHAKE DETECT FUNCTION IMPLEMENTATIONS */
 /*---------------------------------------*/
 
+void shake_detect_timer_enable() {
+	
+}
+
+void shake_detect_timer_disable() {
+	
+}
+
 void shake_detect_init() {
 	// this is in theory: 1000000 * 1000 / 8192 / 500 - 1
 	minShakeTimeCounterVal = (F_CPU * 1000L) / SHAKE_DETECT_TIMER_PRESCALER_VALUE / SHAKE_DETECT_MIN_MS - 1;
-	// printInt(minShakeTimeCounterVal);PRINT_NL;
+
+	// set up the timer
 	SHAKE_DETECT_TIMER_REG = SHAKE_DETECT_TIMER_PRESCALER_MASK;
 }
 
 void shake_detect_update() {
-	if (shakeDetected == 0) SHAKE_DETECT_TIMER_COUNTER = 0;	// reset timer when no shake was detected
+	// if (shakeDetected == 0) SHAKE_DETECT_TIMER_COUNTER = 0;	// reset timer when no shake was detected
 
 	const int32_t totalG = ACCEL_getTotalVectorSquared();
 
-	if (shakeDetected == 1 && minShakeTimeExceeded == 0 && SHAKE_DETECT_TIMER_COUNTER >= minShakeTimeCounterVal) {	// it was shaken long enough
+	if (shakeDetected == 1 && minShakeTimeExceeded == 0
+	 && SHAKE_DETECT_TIMER_COUNTER >= minShakeTimeCounterVal)  // it was shaken long enough
+	{	
 		minShakeTimeExceeded = 1;
 		// DIGIWRITE_H(PORTB, PB1);
 	}
@@ -50,10 +62,10 @@ void shake_detect_update() {
 		// DIGIWRITE_L(PORTB, PB1);
 		minShakeTimeExceeded = 0;
 		(*shakeDetectEndCallback)();
-	}
-
-	if (totalG > SHAKE_DETECT_SHOCK_THRESH && shakeLevel + SHAKE_DETECT_SHOCK_LEVEL_INCREASE < SHAKE_DETECT_MAX_LEVEL) {
-		shakeLevel += SHAKE_DETECT_SHOCK_LEVEL_INCREASE;	// get more excited
+	} else if (totalG > SHAKE_DETECT_SHOCK_THRESH
+	        && shakeLevel + SHAKE_DETECT_SHOCK_LEVEL_INCREASE < SHAKE_DETECT_MAX_LEVEL)
+	{
+        shakeLevel += SHAKE_DETECT_SHOCK_LEVEL_INCREASE;	// get more excited
 
 #ifdef DEBUG
 		// printUInt(totalG);PRINT_NL;

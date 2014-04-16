@@ -53,7 +53,7 @@
 #define ACCEL_CALL_ADC_INIT		// define/undefine if on ACCEL_init() adc_init() should be called or not
 
 #ifndef ACCEL_AREF_V
-#define ACCEL_AREF_V ACCEL_AREF_V_5
+#define ACCEL_AREF_V ACCEL_AREF_V_3_3
 #endif
 
 #ifndef ACCEL_INITIAL_SENSITIVITY		// sensi = 0: low sensitivity
@@ -65,7 +65,7 @@
 #endif
 
 #ifndef ACCEL_CALIB_SAMPLES
-#define ACCEL_CALIB_SAMPLES 1000
+#define ACCEL_CALIB_SAMPLES 250
 #endif
 
 // #ifndef ACCEL_PIN_SLEEP
@@ -88,6 +88,8 @@
 #define ACCEL_PORT_OUT PORTB
 #endif
 
+// Pin X is not used for shake detection! (See below.)
+
 #ifndef ACCEL_PIN_X
 #define ACCEL_PIN_X PB2
 #endif
@@ -100,9 +102,14 @@
 #define ACCEL_PIN_Z PB3
 #endif
 
-#ifndef ACCEL_CHAN_X
-#define ACCEL_CHAN_X 1
-#endif
+// Pin X (Channel 1) is not used for shake detection!
+// We need it for battery loading detection.
+// Uncomment to use it again.
+
+//#ifndef ACCEL_CHAN_X
+//#define ACCEL_CHAN_X 1
+//#endif
+#undef ACCEL_CHAN_X
 
 #ifndef ACCEL_CHAN_Y
 #define ACCEL_CHAN_Y 2
@@ -121,15 +128,15 @@
  */
 void ACCEL_init();
 
+#ifdef ACCEL_CHAN_X
 uint16_t ACCEL_getXRaw();
+#endif
 uint16_t ACCEL_getYRaw();
 uint16_t ACCEL_getZRaw();
 
-/*uint16_t ACCEL_getXVolt();
-uint16_t ACCEL_getYVolt();
-uint16_t ACCEL_getZVolt();*/
-
+#ifdef ACCEL_CHAN_X
 int16_t ACCEL_getXAccel();
+#endif
 int16_t ACCEL_getYAccel();
 int16_t ACCEL_getZAccel();
 

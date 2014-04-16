@@ -81,6 +81,9 @@
  */
 void led_fader_init();
 
+void led_fader_enable();
+void led_fader_disable();
+
 /**
  *	Set a LED fader mode <mode> and its values <v1> and <v2>. The fade will
  *	fade with <speed> where 1 is the fastest and 255 is the slowest speed.

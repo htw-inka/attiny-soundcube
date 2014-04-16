@@ -38,5 +38,5 @@ uint16_t adc_read_avg(uint8_t chan, uint8_t samples) {
     sum += adc_read(chan);
   }
  
-  return (uint16_t)(sum / samples);
+  return (uint16_t)(sum / (uint32_t)samples);
 }
