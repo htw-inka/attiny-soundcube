@@ -47,10 +47,10 @@
 #define PIN_AUDIO_TRIGGER	PB1
 
 #define LED_SHAKEN_VAL		255
-#define LED_SHAKEN_SPEED	10
-#define LED_PULSE_MIN		10
-#define LED_PULSE_MAX		175
-#define LED_PULSE_SPEED		5
+#define LED_SHAKEN_SPEED	5
+#define LED_PULSE_MIN		0
+#define LED_PULSE_MAX		255
+#define LED_PULSE_SPEED		12
 
 #ifdef DEBUG
 #include "debug_tools.h"
